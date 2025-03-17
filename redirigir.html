@@ -3,24 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title>
+    <title>Redirigiendo...</title>
     <script>
-        // Obtener los parámetros de la URL
+        // Obtener el parámetro ID_Code de la URL
         var urlParams = new URLSearchParams(window.location.search);
-        var idCode = urlParams.get("ID_Code"); // Captura el código de la URL
-        
+        var idCode = urlParams.get("ID_Code");
+
         if (idCode) {
-            // Redirigir a Microsoft Forms con el código en el campo
-            window.location.href = "https://forms.office.com/Pages/ResponsePage.aspx?id=qzwxosOxOk-7ESFXRH3btBR_hEQELiVDkVXSPyTKj0JUMFJETUVJQkNLVEdDNzdCN1NEOUJXWVk1Vi4u&entry.123456789=" + idCode;
+            // Redirigir a Microsoft Forms con un pequeño retraso para que cargue el formulario
+            setTimeout(function() {
+                var iframe = document.createElement("iframe");
+                iframe.src = "https://forms.office.com/Pages/ResponsePage.aspx?id=qzwxosOxOk-7ESFXRH3btBR_hEQELiVDkVXSPyTKj0JUMFJETUVJQkNLVEdDNzdCN1NEOUJXWVk1Vi4u";
+                iframe.style.width = "100%";
+                iframe.style.height = "800px";
+                document.body.appendChild(iframe);
+
+                // Intentar insertar el código automáticamente en el campo de texto
+                setTimeout(function() {
+                    var inputFields = document.getElementsByTagName("input");
+                    for (var i = 0; i < inputFields.length; i++) {
+                        if (inputFields[i].type === "text") {
+                            inputFields[i].value = idCode; // Insertar el código
+                            break;
+                        }
+                    }
+                }, 3000); // Esperar a que el formulario cargue
+            }, 1000);
         } else {
-            document.write("<p>Error: Code not found.</p>");
+            document.write("<p><strong>Error:</strong> Code not found.</p>");
         }
     </script>
 </head>
 <body>
-    <p>Si no eres redirigido automáticamente, <a id="manualLink">haz clic aquí</a>.</p>
-    <script>
-        document.getElementById("manualLink").href = "https://forms.office.com/Pages/ResponsePage.aspx?id=qzwxosOxOk-7ESFXRH3btBR_hEQELiVDkVXSPyTKj0JUMFJETUVJQkNLVEdDNzdCN1NEOUJXWVk1Vi4u";
-    </script>
 </body>
 </html>
